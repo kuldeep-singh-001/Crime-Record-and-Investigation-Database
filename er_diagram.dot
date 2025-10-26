@@ -1,0 +1,127 @@
+digraph CrimeInvestigationDB {
+    rankdir=LR;
+    graph [splines=ortho, nodesep=1.0, ranksep=1.5];
+    node [shape=plaintext, fontname="Helvetica", fontsize=11];
+
+    Departments [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6">
+        <TR><TD BGCOLOR="#FF5722" COLSPAN="2"><B>Departments</B></TD></TR>
+        <TR><TD><B>PK</B></TD><TD>department_id</TD></TR>
+        <TR><TD></TD><TD>department_name (UNIQUE)</TD></TR>
+        <TR><TD></TD><TD>location</TD></TR>
+        <TR><TD></TD><TD>contact_number</TD></TR>
+        <TR><TD></TD><TD>created_at</TD></TR>
+        <TR><TD></TD><TD>updated_at</TD></TR>
+      </TABLE>
+    >];
+
+    Officers [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6">
+        <TR><TD BGCOLOR="#2196F3" COLSPAN="2"><B>Officers</B></TD></TR>
+        <TR><TD><B>PK</B></TD><TD>officer_id</TD></TR>
+        <TR><TD></TD><TD>badge_number (UNIQUE)</TD></TR>
+        <TR><TD></TD><TD>first_name</TD></TR>
+        <TR><TD></TD><TD>last_name</TD></TR>
+        <TR><TD></TD><TD>rank</TD></TR>
+        <TR><TD><B>FK</B></TD><TD>department_id → Departments</TD></TR>
+        <TR><TD></TD><TD>email (UNIQUE)</TD></TR>
+        <TR><TD></TD><TD>phone</TD></TR>
+        <TR><TD></TD><TD>status</TD></TR>
+        <TR><TD></TD><TD>hire_date</TD></TR>
+      </TABLE>
+    >];
+
+    Cases [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6">
+        <TR><TD BGCOLOR="#4CAF50" COLSPAN="2"><B>Cases</B></TD></TR>
+        <TR><TD><B>PK</B></TD><TD>case_id</TD></TR>
+        <TR><TD></TD><TD>case_number (UNIQUE)</TD></TR>
+        <TR><TD></TD><TD>title</TD></TR>
+        <TR><TD></TD><TD>description</TD></TR>
+        <TR><TD></TD><TD>case_type</TD></TR>
+        <TR><TD></TD><TD>severity</TD></TR>
+        <TR><TD></TD><TD>status</TD></TR>
+        <TR><TD></TD><TD>incident_date</TD></TR>
+        <TR><TD></TD><TD>reported_date</TD></TR>
+        <TR><TD></TD><TD>location</TD></TR>
+        <TR><TD><B>FK</B></TD><TD>lead_officer_id → Officers</TD></TR>
+        <TR><TD></TD><TD>resolution_date</TD></TR>
+        <TR><TD></TD><TD>resolution_notes</TD></TR>
+      </TABLE>
+    >];
+
+    Suspects [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6">
+        <TR><TD BGCOLOR="#FFC107" COLSPAN="2"><B>Suspects</B></TD></TR>
+        <TR><TD><B>PK</B></TD><TD>suspect_id</TD></TR>
+        <TR><TD></TD><TD>first_name</TD></TR>
+        <TR><TD></TD><TD>last_name</TD></TR>
+        <TR><TD></TD><TD>alias</TD></TR>
+        <TR><TD></TD><TD>date_of_birth</TD></TR>
+        <TR><TD></TD><TD>gender</TD></TR>
+        <TR><TD></TD><TD>nationality</TD></TR>
+        <TR><TD></TD><TD>identification_number</TD></TR>
+        <TR><TD></TD><TD>address</TD></TR>
+        <TR><TD></TD><TD>phone</TD></TR>
+        <TR><TD></TD><TD>email</TD></TR>
+        <TR><TD></TD><TD>physical_description</TD></TR>
+        <TR><TD></TD><TD>criminal_history</TD></TR>
+        <TR><TD></TD><TD>status</TD></TR>
+        <TR><TD></TD><TD>arrest_date</TD></TR>
+      </TABLE>
+    >];
+
+    CaseAssignments [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6">
+        <TR><TD BGCOLOR="#9C27B0" COLSPAN="2"><B>Case Assignments</B></TD></TR>
+        <TR><TD><B>PK</B></TD><TD>assignment_id</TD></TR>
+        <TR><TD><B>FK</B></TD><TD>case_id → Cases</TD></TR>
+        <TR><TD><B>FK</B></TD><TD>suspect_id → Suspects</TD></TR>
+        <TR><TD></TD><TD>involvement_level</TD></TR>
+        <TR><TD></TD><TD>assigned_date</TD></TR>
+        <TR><TD></TD><TD>notes</TD></TR>
+        <TR><TD></TD><TD><I>UNIQUE(case_id, suspect_id)</I></TD></TR>
+      </TABLE>
+    >];
+
+    Evidence [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6">
+        <TR><TD BGCOLOR="#00BCD4" COLSPAN="2"><B>Evidence</B></TD></TR>
+        <TR><TD><B>PK</B></TD><TD>evidence_id</TD></TR>
+        <TR><TD><B>FK</B></TD><TD>case_id → Cases</TD></TR>
+        <TR><TD></TD><TD>evidence_number (UNIQUE)</TD></TR>
+        <TR><TD></TD><TD>evidence_type</TD></TR>
+        <TR><TD></TD><TD>description</TD></TR>
+        <TR><TD></TD><TD>collection_date</TD></TR>
+        <TR><TD></TD><TD>collection_location</TD></TR>
+        <TR><TD><B>FK</B></TD><TD>collected_by → Officers</TD></TR>
+        <TR><TD></TD><TD>storage_location</TD></TR>
+        <TR><TD></TD><TD>status</TD></TR>
+        <TR><TD></TD><TD>chain_of_custody_verified</TD></TR>
+      </TABLE>
+    >];
+
+    EvidenceChain [label=<
+      <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6">
+        <TR><TD BGCOLOR="#E91E63" COLSPAN="2"><B>Evidence Chain</B></TD></TR>
+        <TR><TD><B>PK</B></TD><TD>chain_id</TD></TR>
+        <TR><TD><B>FK</B></TD><TD>evidence_id → Evidence</TD></TR>
+        <TR><TD><B>FK</B></TD><TD>officer_id → Officers</TD></TR>
+        <TR><TD></TD><TD>action</TD></TR>
+        <TR><TD></TD><TD>action_timestamp</TD></TR>
+        <TR><TD></TD><TD>location</TD></TR>
+        <TR><TD></TD><TD>notes</TD></TR>
+      </TABLE>
+    >];
+
+    // Relationships with xlabels for orthogonal edges
+      Departments -> Officers [xlabel="1:N", color="#FF5722", penwidth=2];
+      Officers -> Cases [xlabel="1:N (lead_officer)", color="#2196F3", penwidth=2];
+      Officers -> Evidence [xlabel="1:N (collector)", color="#2196F3", penwidth=2];
+      Officers -> EvidenceChain [xlabel="1:N (handler)", color="#2196F3", penwidth=2];
+      Cases -> CaseAssignments [xlabel="1:N", color="#4CAF50", penwidth=2];
+      Cases -> Evidence [xlabel="1:N", color="#4CAF50", penwidth=2];
+      Suspects -> CaseAssignments [xlabel="1:N", color="#FFC107", penwidth=2];
+      Evidence -> EvidenceChain [xlabel="1:N (custody trail)", color="#00BCD4", penwidth=2];
+
+}
